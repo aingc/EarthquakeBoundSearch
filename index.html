@@ -15,9 +15,9 @@
 			</div>
 			<div class="uk-flex uk-flex-row uk-width-1-4">
 				<div class="uk-margin-top">
-					<form class="uk-search uk-search-default">
+					<form class="uk-search uk-search-default" onsubmit="App.user.searchAndParse();">
 						<a href="" class="uk-search-icon-flip" uk-search-icon></a>
-						<input class="uk-search-input" type="search" placeholder="Search...">
+						<input id="searchTerm" class="uk-search-input" type="search" placeholder="Search...">
 					</form>
 				</div>
 				<div class="uk-margin-left uk-margin-top" id="currentView"></div>

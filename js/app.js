@@ -35,6 +35,12 @@ var App = {
 		}
 	})(),
 	user: {
+		searchAndParse: () => {
+			let searchTerm = encodeURIComponent(document.getElementById('searchTerm').value);
+			App.user.searchLocation(searchTerm).then((locationData) => {
+				App.user.parseLocations(locationData);
+			});
+		},
 		searchLocation: (value) => {
 			//api call with search term
 			//parse json, loop through and make an <a> tag foreach for top 10 results
@@ -61,9 +67,9 @@ var App = {
 						lng: result.lng,
 						title: `${result.name}, ${result.countryName}`
 					};
-					newLink = newLink + `<a href="javascript:App.user.reCenter(${locationPayload});">${locationPayload.title}</a><br>`;
+					newLink = newLink + `<a href="javascript:App.user.center(${locationPayload});">${locationPayload.title}</a><br>`;
 				} else {
-					newLink = newLink + `<a href="javascript:App.user.reCenter(${locationPayload});">${result.name}</a><br>`;
+					newLink = newLink + `<a href="javascript:App.user.center(${locationPayload});">${result.name}</a><br>`;
 				}
 				document.getElementById('searchResult').innerHTML = newLink;
 			}
@@ -105,7 +111,7 @@ var App = {
 			App.mapData.deleteMarkers();
 			map.setZoom(5);
 			document.getElementById('currentView').innerHTML = `<b>Origin of resulting view: </b> ${locPayload.title}`;
-			//addMarker()
+			App.mapData.addMarker(point, locPayload.title);
 			
 			let boundary = {
 				north: locPayload.lat + 5,
@@ -113,7 +119,11 @@ var App = {
 				east: locPayload.lng + 10,
 				west: locPayload.lng - 10
 			};
-			//searchRecentEarthquake(boundary);
+			App.map.searchRecentEarthquakes(boundary).then((earthquakePayload) => {
+				App.map.getEarthquakeInfo(earthquakePayload);
+			}).catch((err) => {
+				alert(err.msg);
+			});
 		},
 		searchRecentEarthquakes: (boundary) => {
 			let req = `http://api.geonames.org/earthquakesJSON?north=${boundary.north}&south=${boundary.south}&east=${boundary.east}&west=${boundary.west}&username=caing`;
@@ -141,7 +151,7 @@ var App = {
 						datetime: result.datetime,
 						depth: result.depth
 					};
-					//addEQMarker(earthquakeInfo);
+					App.map.addEQMarker(earthquakeInfo);
 				}
 			}
 		},
