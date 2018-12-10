@@ -35,9 +35,41 @@ var App = {
 		}
 	})(),
 	user: {
-		search: () => {
+		searchLocation: (value) => {
 			//api call with search term
 			//parse json, loop through and make an <a> tag foreach for top 10 results
+			
+			var req = `http://api.geonames.org/searchJSON?q=${value}&maxRows=15&username=caing`;
+			
+			return $.ajax({
+				'type': 'GET',
+				'url': req,
+				'dataType': 'json',
+			});
+		},
+		parseLocations: (locations) => {
+			let newLink = '';
+			let geos = locations.geonames;
+			let locationPayload;
+			for (let i = 0; i < geos.length; i++) {
+				let result = geos[i];
+				
+				if (result.countryName !== null && result.name !== result.countryName) {
+					locationPayload = {
+						name: result.name,
+						countryName: result.countryName,
+						lat: result.lat,
+						lng: result.lng
+					};
+					newLink = newLink + `<a href="javascript:App.user.reCenter(${locationPayload});">${result.name}, ${result.countryName}</a><br>`;
+				} else {
+					newLink = newLink + `<a href="javascript:App.user.reCenter(${locationPayload});">${result.name}</a><br>`;
+				}
+				//document.getElementById('searchResult').innerHTML = newLink;
+			}
+		},
+		reCenter: (locPayload) => {
+			
 		}
 	},
 	
