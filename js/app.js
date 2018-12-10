@@ -67,9 +67,13 @@ var App = {
 						lng: result.lng,
 						title: `${result.name}, ${result.countryName}`
 					};
-					newLink = newLink + `<a href="javascript:App.user.center(${locationPayload});">${locationPayload.title}</a><br>`;
+					console.log(locationPayload);
+					
+					newLink = newLink + `<a href="javascript:App.map.center(${locationPayload.lat}, ${locationPayload.lng}, '${locationPayload.title}');">${locationPayload.title}</a><br>`;
+					//newLink = newLink + '<a href="javascript:App.map.center(' + locationPayload + ');">' + locationPayload.title + '</a><br>';
 				} else {
-					newLink = newLink + `<a href="javascript:App.user.center(${locationPayload});">${result.name}</a><br>`;
+					newLink = newLink + `<a href="javascript:App.map.center(${locationPayload.lat}, ${locationPayload.lng}, '${locationPayload.title}');">${result.name}</a><br>`;
+					//newLink = newLink + '<a href="javascript:App.map.center(' + locationPayload + ');">' + locationPayload.name + '</a><br>';
 				}
 				document.getElementById('searchResult').innerHTML = newLink;
 			}
@@ -100,24 +104,24 @@ var App = {
 			App.mapData.setMainMap(newMap);
 			App.mapData.setBoundingBox(newBoundingBox);
 		},
-		center: (locPayload) => {
+		center: (newLat, newLng, title) => {
 			let point = {
-				lat: locPayload.lat,
-				lng: locPayload.lng
+				lat: newLat,
+				lng: newLng
 			};
 			let map = App.mapData.getMainMap();
 			
 			map.setCenter(point);
 			App.mapData.deleteMarkers();
 			map.setZoom(5);
-			document.getElementById('currentView').innerHTML = `<b>Origin of resulting view: </b> ${locPayload.title}`;
-			App.mapData.addMarker(point, locPayload.title);
+			document.getElementById('currentView').innerHTML = `<b>Origin: </b> ${title}`;
+			App.map.addMarker(point, title);
 			
 			let boundary = {
-				north: locPayload.lat + 5,
-				south: locPayload.lat - 5,
-				east: locPayload.lng + 10,
-				west: locPayload.lng - 10
+				north: newLat + 5,
+				south: newLat - 5,
+				east: newLng + 10,
+				west: newLng - 10
 			};
 			App.map.searchRecentEarthquakes(boundary).then((earthquakePayload) => {
 				App.map.getEarthquakeInfo(earthquakePayload);
@@ -184,7 +188,7 @@ var App = {
 			let newMarker = new google.maps.Marker({
 				position: point,
 				icon: {
-					path: google.maps.SymbolPath.BACKWARDS_CLOSED_ARROW,
+					path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
 					strokeColor: '#FFFF00',
 					scale: 2
 				},
