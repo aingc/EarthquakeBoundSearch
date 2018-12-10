@@ -2,11 +2,23 @@
 	<head>
 		<meta charset="utf-8" />
 		
+		<link rel="stylesheet" type="text/css" href="./css/uikit.min.css">
+		<link rel="stylesheet" type="text/css" href="./css/app.css">
 		<link rel="shortcut icon" href="favicon.ico">
 		<title>Earthquake Bound Search</title>
 	</head>
 
 	<body>
-		<div id="main"></div>
+		<div class="uk-container" id="main">
+			<div class="uk-flex uk-flex-column uk-width-3-3">
+				<div class="uk-card uk-card-large uk-card-default uk-card-body uk-margin-top uk-height-large" id="map"></div>
+			</div>
+		</div>
+		
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3H5Ma47xKShsGaitBRBkO4c-_sCgi01M&region=US&callback=App.map.init"></script>
+		<script type="text/javascript" src="./js/uikit.min.js"></script>
+		<script type="text/javascript" src="./js/uikit-icons.min.js"></script>
+		<script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="./js/app.js"></script>
 	</body>
 </html>
