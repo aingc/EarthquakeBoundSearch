@@ -38,8 +38,7 @@ var App = {
 		searchLocation: (value) => {
 			//api call with search term
 			//parse json, loop through and make an <a> tag foreach for top 10 results
-			
-			var req = `http://api.geonames.org/searchJSON?q=${value}&maxRows=15&username=caing`;
+			var req = `http://api.geonames.org/searchJSON?q=${value}&maxRows=15&username=caing`;			
 			
 			return $.ajax({
 				'type': 'GET',
@@ -65,7 +64,7 @@ var App = {
 				} else {
 					newLink = newLink + `<a href="javascript:App.user.reCenter(${locationPayload});">${result.name}</a><br>`;
 				}
-				//document.getElementById('searchResult').innerHTML = newLink;
+				document.getElementById('searchResult').innerHTML = newLink;
 			}
 		},
 		reCenter: (locPayload) => {
